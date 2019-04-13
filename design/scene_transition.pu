@@ -1,0 +1,21 @@
+@startuml
+
+object Title
+
+object How
+Title --> How: Howを選択
+
+object StageSelect
+Title --> StageSelect: StageSelectを選択
+
+object Stage
+StageSelect --> StageSelect: 別ワールドに移動
+StageSelect --> Stage: ステージを選択
+
+object Config
+Title --> Config: Configを選択
+StageSelect --> Config: ポーズメニュー
+Stage --> Config: ポーズメニュー
+
+
+@enduml
