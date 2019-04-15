@@ -1,4 +1,3 @@
-extern crate ggez;
 use ggez::{
     Context,
     GameResult,
@@ -10,31 +9,36 @@ use ggez::{
     },
     graphics,
 };
-
 use std::{
     env,
     path,
 };
-
 mod scene;
 use scene::{
     Scene,
-    TitleScene,
+    title_scene::TitleScene,
 };
+mod stext;
+mod cursor;
+mod input;
+use input::Input;
 
 struct GameState {
-    scene: Box<Scene>
+    scene: Box<Scene>,
+    input: Input,
 }
 
 impl GameState {
 
     fn new(ctx: &mut Context) -> GameResult<GameState> {
         let title_scene = Box::new(TitleScene::new(ctx)?);
+        let input = Input::new();
+
         let game_state = GameState {
             scene: title_scene,
+            input,
         };
         Ok(game_state)
-
     }
 
 }
@@ -42,7 +46,11 @@ impl GameState {
 impl EventHandler for GameState {
 
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        let _scene_update_result = self.scene.update()?;
+        let _scene_update_result = self.scene.update(&self.input)?;
+
+//        self.input.show();
+
+        self.input.clear();
         Ok(())
     }
 
@@ -54,10 +62,11 @@ impl EventHandler for GameState {
     }
 
     fn key_down_event(&mut self, _ctx: &mut Context, keycode: KeyCode, _keymods: KeyMods, _repeat: bool) {
-
+        self.input.key_down(keycode);
     }
 
     fn key_up_event(&mut self, _ctx: &mut Context, keycode: KeyCode, _keymods: KeyMods) {
+        self.input.key_up(keycode);
     }
 
 }
