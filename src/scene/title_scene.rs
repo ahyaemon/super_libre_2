@@ -1,4 +1,5 @@
 use crate::scene::Scene;
+use crate::scene::stage_select_scene::StageSelectScene;
 use ggez::{
     Context,
     GameResult,
@@ -20,6 +21,8 @@ use crate::input::{
     InputType,
 };
 use super::title_sound::TitleSound;
+use ggez::audio::SoundSource;
+
 
 pub struct TitleScene {
     title_text: SText,
@@ -28,6 +31,7 @@ pub struct TitleScene {
     config_text: SText,
     cursor: Cursor,
     sound: TitleSound,
+    selected: bool,
 }
 
 impl TitleScene {
@@ -106,7 +110,7 @@ impl TitleScene {
         let cursor = Cursor::new(Point2::new(menu_x - 80.0, menu_y), 80.0, 3);
 
         let mut sound = TitleSound::new(ctx)?;
-        sound.play_bgm_juvenile();
+        let _ = sound.bgm.play();
 
         let title_scene = TitleScene {
             title_text: stitle,
@@ -115,6 +119,7 @@ impl TitleScene {
             config_text: sconfig,
             cursor,
             sound,
+            selected: false,
         };
         Ok(title_scene)
     }
@@ -123,16 +128,20 @@ impl TitleScene {
 
 impl Scene for TitleScene {
 
-    fn update(&mut self, input: &Input) -> GameResult {
+    fn update(&mut self, _ctx: &mut Context, input: &Input) -> GameResult {
         if let Some(input_type) = &input.pressed {
             match input_type {
                 InputType::Up => {
-                    self.sound.play_se_hyoushigi();
+                    let _ = self.sound.se_hyoushigi.play();
                     self.cursor.up();
                 }
                 InputType::Down => {
-                    self.sound.play_se_hyoushigi();
+                    let _ = self.sound.se_hyoushigi.play();
                     self.cursor.down();
+                }
+                InputType::Start => {
+                    let _ = self.sound.se_hyoushigi.play();
+                    self.selected = true;
                 }
                 _ => {}
             }
@@ -147,6 +156,24 @@ impl Scene for TitleScene {
         self.config_text.draw(ctx)?;
         self.cursor.draw(ctx)?;
         Ok(())
+    }
+
+    fn next_scene(&mut self, ctx: &mut Context) -> Option<Box<Scene>> {
+        if self.selected {
+            Some(
+                match self.cursor.item_index {
+                    0 => {
+                        self.sound.bgm.stop();
+                        Box::new(StageSelectScene::new(ctx).ok()?)
+                    }
+                    _ => {
+                        Box::new(TitleScene::new(ctx).ok()?)
+                    }
+                }
+            )
+        } else {
+            None
+        }
     }
 
 }

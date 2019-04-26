@@ -12,6 +12,8 @@ pub enum InputType {
     Right,
     Down,
     Left,
+    Start,
+    Select,
 }
 
 impl InputType {
@@ -27,6 +29,8 @@ impl InputType {
             KeyCode::Down => { Some(InputType::Down) }
             KeyCode::Right => { Some(InputType::Right) }
             KeyCode::Up => { Some(InputType::Up) }
+
+            KeyCode::Return => { Some(InputType::Start) }
 
             _ => { None }
         }

@@ -18,7 +18,7 @@ pub struct Cursor {
     pub position: Point2<f32>,
     pub interval: f32,
     pub item_count: i8,
-    item_index: i8,
+    pub item_index: i8,
     text: Text,
 }
 

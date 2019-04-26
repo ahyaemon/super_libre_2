@@ -17,9 +17,12 @@ mod scene;
 use scene::{
     Scene,
     title_scene::TitleScene,
+    stage_select_scene::StageSelectScene,
+    stage_scene::StageScene,
 };
 mod stext;
 mod cursor;
+mod sprite;
 mod input;
 use input::Input;
 
@@ -45,9 +48,14 @@ impl GameState {
 
 impl EventHandler for GameState {
 
-    fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        let _scene_update_result = self.scene.update(&self.input)?;
+    fn update(&mut self, ctx: &mut Context) -> GameResult {
+        // シーンの遷移
+        if let Some(scene) = self.scene.next_scene(ctx) {
+            self.scene = scene;
+        }
 
+        // シーンのアップデート
+        let _scene_update_result = self.scene.update(ctx, &self.input)?;
 //        self.input.show();
 
         self.input.clear();
