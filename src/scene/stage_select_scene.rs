@@ -21,12 +21,12 @@ pub struct StageSelectScene {
     cursor: Cursor,
     stages: Vec<SText>,
     selected: bool,
+    _sound: StageSelectSound,
 }
 
 impl StageSelectScene {
 
-    pub fn new(_ctx: &mut Context) -> GameResult<StageSelectScene> {
-        let cursor = Cursor::new(Point2::new(100.0, 100.0), 100.0, 3);
+    pub fn new(ctx: &mut Context) -> GameResult<StageSelectScene> {
         let mut stages = vec![];
         for i in 0..3 {
             let mut text = Text::new(TextFragment {
@@ -45,9 +45,10 @@ impl StageSelectScene {
         }
 
         Ok(StageSelectScene {
-            cursor,
+            cursor: Cursor::new(Point2::new(100.0, 100.0), 100.0, 3),
             stages,
             selected: false,
+            _sound: StageSelectSound::new(ctx)?,
         })
     }
 

@@ -3,7 +3,7 @@ use ggez::graphics::Image;
 use cgmath::Point2;
 use crate::input::{Input, InputType};
 
-enum PlayerStateType {
+enum _PlayerStateType {
     Stand,
     Walk,
     Dash,
@@ -20,10 +20,10 @@ pub struct Player {
     velocity: Point2<f32>,
     walk_power: f32,
     max_walk_speed: f32,
-    dash_power: f32,
-    max_dash_speed: f32,
-    jump_power: f32,
-    max_fall_speed: f32,
+    _dash_power: f32,
+    _max_dash_speed: f32,
+    _jump_power: f32,
+    _max_fall_speed: f32,
     friction: f32,
 }
 
@@ -38,10 +38,10 @@ impl Player {
                 velocity: Point2::new(0.0, 0.0),
                 walk_power: 2.0,
                 max_walk_speed: 10.0,
-                dash_power: 4.0,
-                max_dash_speed: 20.0,
-                jump_power: 10.0,
-                max_fall_speed: 10.0,
+                _dash_power: 4.0,
+                _max_dash_speed: 20.0,
+                _jump_power: 10.0,
+                _max_fall_speed: 10.0,
                 friction: 0.9,
             }
         )

@@ -13,7 +13,7 @@ pub enum InputType {
     Down,
     Left,
     Start,
-    Select,
+//    Select,
 }
 
 impl InputType {

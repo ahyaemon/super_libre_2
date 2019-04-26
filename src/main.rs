@@ -17,8 +17,6 @@ mod scene;
 use scene::{
     Scene,
     title_scene::TitleScene,
-    stage_select_scene::StageSelectScene,
-    stage_scene::StageScene,
 };
 mod stext;
 mod cursor;
