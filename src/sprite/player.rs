@@ -11,7 +11,6 @@ enum _PlayerStateType {
     Air,
 }
 
-// TODO: 重力の影響も追加 (ブロックの追加後)
 pub struct Player {
     image: Image,
     position: Point2<f32>,
