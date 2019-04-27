@@ -1,16 +1,13 @@
-use ggez::{
-    Context,
-    GameResult,
-};
-use crate::{
-    scene::Scene,
-    input::{
-        Input,
-     },
-    sprite::player::Player,
-};
-use crate::scene::stage_sound::StageSound;
+use ggez::Context;
+use ggez::GameResult;
 use ggez::audio::SoundSource;
+
+use crate::game::scenes::Scene;
+use crate::game::input::Input;
+use crate::game::game_world::sprites::Player;
+
+use super::stage_sound::StageSound;
+
 
 pub struct StageScene {
     player: Player,

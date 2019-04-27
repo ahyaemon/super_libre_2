@@ -1,10 +1,7 @@
 // TODO: パッド入力を表す　Input と、各画面に対応した Command が必要？
 
-use ggez::{
-    event::{
-        KeyCode,
-    },
-};
+use ggez::event::KeyCode;
+
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum InputType {

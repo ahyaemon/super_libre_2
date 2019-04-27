@@ -1,18 +1,17 @@
-use ggez::{
-    Context,
-    GameResult,
-    graphics::{
-        self,
-        Text,
-        TextFragment,
-        DrawParam,
-        Font,
-        Scale,
-        Align,
-    },
-};
+use ggez::Context;
+use ggez::GameResult;
+use ggez::graphics;
+use ggez::graphics::Text;
+use ggez::graphics::TextFragment;
+use ggez::graphics::DrawParam;
+use ggez::graphics::Font;
+use ggez::graphics::Scale;
+use ggez::graphics::Align;
+
 use cgmath::Point2;
+
 use std::f32;
+
 
 pub struct Cursor {
     pub position: Point2<f32>,

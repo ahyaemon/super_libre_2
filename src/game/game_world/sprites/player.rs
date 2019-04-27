@@ -1,7 +1,13 @@
-use ggez::{Context, GameResult, graphics};
+use ggez::Context;
+use ggez::GameResult;
+use ggez::graphics;
 use ggez::graphics::Image;
+
 use cgmath::Point2;
-use crate::input::{Input, InputType};
+
+use crate::game::input::Input;
+use crate::game::input::InputType;
+
 
 enum _PlayerStateType {
     Stand,

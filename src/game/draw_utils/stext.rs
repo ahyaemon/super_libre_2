@@ -1,13 +1,11 @@
-use ggez::{
-    Context,
-    GameResult,
-    graphics::{
-        self,
-        Text,
-        DrawParam,
-    },
-};
+use ggez::Context;
+use ggez::GameResult;
+use ggez::graphics;
+use ggez::graphics::Text;
+use ggez::graphics::DrawParam;
+
 use cgmath::Point2;
+
 
 pub struct SText{
     pub text: Text,

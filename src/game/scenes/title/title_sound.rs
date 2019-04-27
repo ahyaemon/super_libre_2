@@ -1,10 +1,7 @@
-use ggez::{
-    Context,
-    GameResult,
-    audio::{
-        Source, SoundSource
-    },
-};
+use ggez::Context;
+use ggez::GameResult;
+use ggez::audio::Source;
+use ggez::audio::SoundSource;
 
 
 pub struct TitleSound {

@@ -8,14 +8,17 @@ use ggez::graphics::Font;
 use ggez::graphics::Align;
 
 use cgmath::Point2;
+
 use std::f32;
 
-use crate::scene::Scene;
-use crate::scene::stage_select_sound::StageSelectSound;
-use crate::stext::SText;
-use crate::input::{Input, InputType};
-use crate::cursor::Cursor;
-use crate::scene::stage_scene::StageScene;
+use crate::game::scenes::Scene;
+use crate::game::draw_utils::Cursor;
+use crate::game::draw_utils::SText;
+use crate::game::input::Input;
+use crate::game::input::InputType;
+use crate::game::scenes::StageScene;
+
+use super::stage_select_sound::StageSelectSound;
 
 pub struct StageSelectScene {
     cursor: Cursor,

@@ -1,27 +1,25 @@
-use crate::scene::Scene;
-use crate::scene::stage_select_scene::StageSelectScene;
-use ggez::{
-    Context,
-    GameResult,
-    graphics::{
-        Text,
-        Scale,
-        TextFragment,
-        Color,
-        Font,
-        Align,
-    },
-};
-use cgmath::Point2;
-use std::f32;
-use crate::stext::SText;
-use crate::cursor::Cursor;
-use crate::input::{
-    Input,
-    InputType,
-};
-use super::title_sound::TitleSound;
+use ggez::Context;
+use ggez::GameResult;
+use ggez::graphics::Text;
+use ggez::graphics::Scale;
+use ggez::graphics::TextFragment;
+use ggez::graphics::Color;
+use ggez::graphics::Font;
+use ggez::graphics::Align;
 use ggez::audio::SoundSource;
+
+use cgmath::Point2;
+
+use std::f32;
+
+use crate::game::scenes::Scene;
+use crate::game::scenes::StageSelectScene;
+use crate::game::draw_utils::SText;
+use crate::game::draw_utils::Cursor;
+use crate::game::input::Input;
+use crate::game::input::InputType;
+
+use super::title_sound::TitleSound;
 
 
 pub struct TitleScene {

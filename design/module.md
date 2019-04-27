@@ -32,7 +32,7 @@
 
       - ending_sound
 
-  - world
+  - game_world
     - sprites
       - player
 
@@ -52,3 +52,5 @@
     - stext
 
     - cursor
+
+  - input
