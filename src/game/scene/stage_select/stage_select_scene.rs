@@ -11,12 +11,12 @@ use cgmath::Point2;
 
 use std::f32;
 
-use crate::game::scenes::Scene;
+use crate::game::scene::Scene;
+use crate::game::scene::StageScene;
 use crate::game::draw_utils::Cursor;
 use crate::game::draw_utils::SText;
 use crate::game::input::Input;
 use crate::game::input::InputType;
-use crate::game::scenes::StageScene;
 
 use super::stage_select_sound::StageSelectSound;
 

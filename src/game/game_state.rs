@@ -5,8 +5,8 @@ use ggez::event::KeyCode;
 use ggez::event::KeyMods;
 use ggez::graphics;
 
-use super::scenes::Scene;
-use super::scenes::TitleScene;
+use super::scene::Scene;
+use super::scene::TitleScene;
 use super::input::Input;
 
 

@@ -2,9 +2,9 @@ use ggez::Context;
 use ggez::GameResult;
 use ggez::audio::SoundSource;
 
-use crate::game::scenes::Scene;
+use crate::game::scene::Scene;
 use crate::game::input::Input;
-use crate::game::game_world::sprites::Player;
+use crate::game::game_world::sprite::Player;
 
 use super::stage_sound::StageSound;
 

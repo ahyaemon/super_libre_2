@@ -12,8 +12,8 @@ use cgmath::Point2;
 
 use std::f32;
 
-use crate::game::scenes::Scene;
-use crate::game::scenes::StageSelectScene;
+use crate::game::scene::Scene;
+use crate::game::scene::StageSelectScene;
 use crate::game::draw_utils::SText;
 use crate::game::draw_utils::Cursor;
 use crate::game::input::Input;

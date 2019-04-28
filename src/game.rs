@@ -1,6 +1,6 @@
 mod draw_utils;
 mod game_world;
-mod scenes;
+mod scene;
 mod input;
 
 mod game_state;
