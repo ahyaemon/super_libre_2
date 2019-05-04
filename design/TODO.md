@@ -1,4 +1,22 @@
 # TODO
+
+- Position, Velocity の構造体を作って、動作はその中に入れる
+
+- Collision 計算用の構造体も作る
+```
+struct CollisionCalculator {
+    position: Position,
+    velocity: Velocity,
+}
+```
+みたいな？
+player クラスに衝突判定ロジックが入らないようにする。
+
+- 速度にイプシロンを持たせる
+  - 0.05 くらい？
+
+- 位置は整数値で持ったほうがいいか？
+
 - 命名規約
   - sprite
     - background

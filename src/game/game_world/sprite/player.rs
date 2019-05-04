@@ -9,6 +9,7 @@ use crate::game::input::Input;
 use crate::game::input::InputType;
 use crate::game::game_world::map::Map;
 use crate::game::game_world::sprite::Sprite;
+use std::slice::Iter;
 
 
 #[derive(PartialEq)]
@@ -177,11 +178,40 @@ impl Player {
 
     /// 下にぶつかったスプライトがある場合はその参照を返す
     fn collide_bottom<'a>(&self, map: &'a Map) -> Option<&'a Sprite> {
-        // y 範囲に対して x を求める
+        // 判定する数だけアローを用意する
+        let beg = self.position.y + 96.0;
+        let end = self.position.y + 96.0 + self.velocity.y;
+        let vec = f32_to_i32vec_contains_end(beg, end, 10);
+        let itr = vec.iter();
+
+        match self.velocity.x {
+            velx if 0.05 >= velx * velx => {
+                // 真下に移動している場合は、x 固定
+                for y in itr {
+                    let x = self.position.x;
+                    let irow = ((*y as f32) / 64.0).round() as usize;
+                    let icol = (x / 64.0).round() as usize;
+                    if let Some(sprite_ref) = map.get_sprite(irow, icol) {
+                        return Some(sprite_ref)
+                    }
+                }
+            }
+            _ => {
+                // 係数の用意
+                let (a, b) = calc_coef(&self.position, &self.velocity);
+                for y in itr {
+                    let x = (*y as f32) / a - b / a;
+                    let irow = ((*y as f32) / 64.0).round() as usize;
+                    let icol = (x / 64.0).round() as usize;
+                    if let Some(sprite_ref) = map.get_sprite(irow, icol) {
+                        return Some(sprite_ref)
+                    }
+                }
+            }
+        }
 
 
-
-        map.get_sprite(1, 0)
+        None
     }
 
     /// 左にぶつかったスプライトがある場合はその参照を返す
@@ -199,4 +229,24 @@ impl Player {
         let _ = graphics::draw(ctx, &self.image, (self.position,));
     }
 
+}
+
+fn calc_coef(position: &Point2<f32>, velocity: &Point2<f32>) -> (f32, f32) {
+    let x0 = position.x;
+    let y0 = position.y;
+    let x1 = position.x + velocity.x;
+    let y1 = position.y + velocity.y;
+    let a = (y1 - y0) / (x1 - x0);
+    let b = (x1 * y0 - x0 * y1) / (x1 - x0);
+    (a, b)
+}
+
+fn f32_to_i32vec_contains_end(beg: f32, end: f32, step: i32) -> Vec<i32> {
+    let i_beg = beg.round() as i32;
+    let i_end = end.round() as i32;
+    let mut vec = (i_beg..i_end)
+        .filter(|i| i % step == 0)
+        .collect::<Vec<i32>>();
+    vec.push(i_end);
+    vec
 }
