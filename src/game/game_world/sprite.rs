@@ -3,6 +3,8 @@ pub mod background;
 mod player;
 pub use self::player::Player;
 
+pub mod physics;
+
 use ggez::Context;
 
 pub trait Sprite {
