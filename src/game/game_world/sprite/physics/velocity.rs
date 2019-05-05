@@ -50,19 +50,31 @@ impl Velocity {
     }
 
     pub fn goes_up(&self) -> bool {
-        self.y < 0.0
+        self.y < -self.epsilon
     }
 
     pub fn goes_right(&self) -> bool {
-        self.x > 0.0
+        self.x > self.epsilon
     }
 
     pub fn goes_down(&self) -> bool {
-        self.y > 0.0
+        self.y > self.epsilon
     }
 
     pub fn goes_left(&self) -> bool {
-        self.x < 0.0
+        self.x < -self.epsilon
+    }
+
+    pub fn goes_horizontal_only(&self) -> bool {
+        let vertical = self.goes_down() || self.goes_up();
+        let horizontal = self.goes_right() || self.goes_left();
+        horizontal && (!vertical)
+    }
+
+    pub fn goes_vertical_only(&self) -> bool {
+        let vertical = self.goes_down() || self.goes_up();
+        let horizontal = self.goes_right() || self.goes_left();
+        (!horizontal) && vertical
     }
 
 }

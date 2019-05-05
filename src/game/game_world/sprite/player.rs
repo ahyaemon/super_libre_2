@@ -9,6 +9,7 @@ use crate::game::game_world::map::Map;
 use crate::game::game_world::sprite::Sprite;
 use crate::game::game_world::sprite::physics::{Velocity, LinearCollider};
 use crate::game::game_world::sprite::physics::Position;
+use crate::game::game_world::sprite::physics::Figure;
 
 
 #[derive(PartialEq)]
@@ -23,6 +24,7 @@ enum PlayerStateType {
 
 pub struct Player {
     image: Image,
+    figure: Figure,
     position: Position,
     state: PlayerStateType,
 
@@ -50,6 +52,7 @@ impl Player {
         Ok(
             Player {
                 image: Image::new(ctx, "/img/player/stand01.png")?,
+                figure: Figure::new(96.0, 64.0),
                 position: Position::new(100.0, 100.0),
                 state: PlayerStateType::Stand,
 
@@ -97,7 +100,7 @@ impl Player {
 
         // 死亡判定
         // TODO: 全てのスプライトの update が終了してから判定したほうがいい？
-        if self.position.y > 664.0 {
+        if self.position.y > 664.0 { // TODO: 固定値 (画面下の死亡判定領域)
             self.state = PlayerStateType::Dead;
         }
 
@@ -109,9 +112,9 @@ impl Player {
         let mut sprite_bottom = None;
         let mut sprite_left = None;
         {
-            let collider = LinearCollider::new(&self.position, &self.velocity);
+            let collider = LinearCollider::new(&self.figure, &self.position, &self.velocity);
             if self.velocity.goes_up() {
-                sprite_top = self.collide_top(map);
+                sprite_top = self.collide_top(map, &collider);
             }
             if self.velocity.goes_down() {
                 sprite_bottom = self.collide_bottom(map, &collider);
@@ -146,7 +149,7 @@ impl Player {
             self.velocity.stop_y();
 
             // player 足元の y 座標を sprite の頂点座標に合わせる
-            let new_y = sprite.get_top() - 64.0;
+            let new_y = sprite.get_top() - self.figure.width;
             self.position.set_y(new_y);
         }
 
@@ -159,7 +162,13 @@ impl Player {
     }
 
     /// 上にぶつかったスプライトがある場合はその参照を返す
-    fn collide_top<'a>(&self, _map: &'a Map) -> Option<&'a Sprite> {
+    fn collide_top<'a, 'b>(&self, map: &'a Map, collider: &'b LinearCollider) -> Option<&'a Sprite> {
+        let cell_coordinates = collider.create_coordinates_up(10);
+        for (irow, icol) in cell_coordinates {
+            if let Some(sprite_ref) = map.get_sprite(irow, icol) {
+                return Some(sprite_ref);
+            }
+        }
         None
     }
 
@@ -170,40 +179,6 @@ impl Player {
 
     /// 下にぶつかったスプライトがある場合はその参照を返す
     fn collide_bottom<'a, 'b>(&self, map: &'a Map, collider: &'b LinearCollider) -> Option<&'a Sprite> {
-        // 判定する数だけアローを用意する
-        let vec = collider.create_vec_y(10);
-        let beg = self.position.y + 96.0;
-        let end = self.position.y + 96.0 + self.velocity.y;
-        let vec = f32_to_i32vec_contains_end(beg, end, 10);
-        let itr = vec.iter();
-
-        match self.velocity.x {
-            velx if 0.05 >= velx * velx => {
-                // 真下に移動している場合は、x 固定
-                for y in itr {
-                    let x = self.position.x;
-                    let irow = ((*y as f32) / 64.0).round() as usize;
-                    let icol = (x / 64.0).round() as usize;
-                    if let Some(sprite_ref) = map.get_sprite(irow, icol) {
-                        return Some(sprite_ref)
-                    }
-                }
-            }
-            _ => {
-                // 係数の用意
-                let (a, b) = calc_coef(&self.position, &self.velocity);
-                for y in itr {
-                    let x = (*y as f32) / a - b / a;
-                    let irow = ((*y as f32) / 64.0).round() as usize;
-                    let icol = (x / 64.0).round() as usize;
-                    if let Some(sprite_ref) = map.get_sprite(irow, icol) {
-                        return Some(sprite_ref)
-                    }
-                }
-            }
-        }
-
-
         None
     }
 
@@ -222,24 +197,4 @@ impl Player {
         let _ = graphics::draw(ctx, &self.image, (self.position.to_point(),));
     }
 
-}
-
-fn calc_coef(position: &Position, velocity: &Velocity) -> (f32, f32) {
-    let x0 = position.x;
-    let y0 = position.y;
-    let x1 = position.x + velocity.x;
-    let y1 = position.y + velocity.y;
-    let a = (y1 - y0) / (x1 - x0);
-    let b = (x1 * y0 - x0 * y1) / (x1 - x0);
-    (a, b)
-}
-
-fn f32_to_i32vec_contains_end(beg: f32, end: f32, step: i32) -> Vec<i32> {
-    let i_beg = beg.round() as i32;
-    let i_end = end.round() as i32;
-    let mut vec = (i_beg..i_end)
-        .filter(|i| i % step == 0)
-        .collect::<Vec<i32>>();
-    vec.push(i_end);
-    vec
 }
