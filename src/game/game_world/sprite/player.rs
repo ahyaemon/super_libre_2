@@ -3,8 +3,6 @@ use ggez::GameResult;
 use ggez::graphics;
 use ggez::graphics::Image;
 
-use cgmath::Point2;
-
 use crate::game::input::Input;
 use crate::game::input::InputType;
 use crate::game::game_world::map::Map;
@@ -12,16 +10,14 @@ use crate::game::game_world::sprite::Sprite;
 use crate::game::game_world::sprite::physics::{Velocity, LinearCollider};
 use crate::game::game_world::sprite::physics::Position;
 
-use std::slice::Iter;
-
 
 #[derive(PartialEq)]
 enum PlayerStateType {
     Stand,
-    Walk,
-    Dash,
-    Jump,
-    Air,
+    _Walk,
+    _Dash,
+    _Jump,
+    _Air,
     Dead,
 }
 
@@ -163,18 +159,19 @@ impl Player {
     }
 
     /// 上にぶつかったスプライトがある場合はその参照を返す
-    fn collide_top<'a>(&self, map: &'a Map) -> Option<&'a Sprite> {
+    fn collide_top<'a>(&self, _map: &'a Map) -> Option<&'a Sprite> {
         None
     }
 
     /// 右にぶつかったスプライトがある場合はその参照を返す
-    fn collide_right<'a>(&self, map: &'a Map) -> Option<&'a Sprite> {
+    fn collide_right<'a>(&self, _map: &'a Map) -> Option<&'a Sprite> {
         None
     }
 
     /// 下にぶつかったスプライトがある場合はその参照を返す
     fn collide_bottom<'a, 'b>(&self, map: &'a Map, collider: &'b LinearCollider) -> Option<&'a Sprite> {
         // 判定する数だけアローを用意する
+        let vec = collider.create_vec_y(10);
         let beg = self.position.y + 96.0;
         let end = self.position.y + 96.0 + self.velocity.y;
         let vec = f32_to_i32vec_contains_end(beg, end, 10);
@@ -211,7 +208,7 @@ impl Player {
     }
 
     /// 左にぶつかったスプライトがある場合はその参照を返す
-    fn collide_left<'a>(&self, map: &'a Map) -> Option<&'a Sprite> {
+    fn collide_left<'a>(&self, _map: &'a Map) -> Option<&'a Sprite> {
         None
     }
 
